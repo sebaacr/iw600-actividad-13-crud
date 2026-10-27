@@ -56,3 +56,8 @@ td .boton, td button { margin: 3px; }
   td { border: none; border-bottom: 1px solid #edf1f5; }
   td::before { content: attr(data-label); display: block; font-weight: bold; color: #4b6478; font-size: .75rem; }
 }
+
+/* Actividad 14 – formulario con validación */
+form { display: grid; gap: 10px; max-width: 600px; }
+form label { display: grid; gap: 5px; font-weight: 600; margin: 0; }
+form small.error { margin-top: -6px; }

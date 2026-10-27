@@ -1,65 +1,87 @@
 <script setup>
-import { reactive, ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { obtenerServicio, crearServicio, actualizarServicio } from '../services/serviciosApi';
+
+const CATEGORIAS = ['Soporte', 'Desarrollo', 'Redes', 'Seguridad'];
 
 const route = useRoute();
 const router = useRouter();
-const editando = Boolean(route.params.id);
-const formulario = reactive({ nombre: '', categoria: '', precio: 0, descripcion: '' });
-const error = ref('');
+const id = route.params.id;
+const editando = computed(() => Boolean(id));
+const formulario = ref({ nombre: '', categoria: '', precio: '', descripcion: '' });
+const errores = ref({});
+const mensajeError = ref('');
+const cargando = ref(false);
 const guardando = ref(false);
 
 onMounted(async () => {
-  if (!editando) return;
-  try { Object.assign(formulario, await obtenerServicio(route.params.id)); }
-  catch (e) { error.value = `No fue posible cargar: ${e.message}`; }
+  if (!id) return;
+  cargando.value = true;
+  try {
+    const datos = await obtenerServicio(id);
+    formulario.value = { nombre: datos.nombre, categoria: datos.categoria,
+      precio: datos.precio, descripcion: datos.descripcion };
+  } catch { mensajeError.value = 'No fue posible cargar el servicio.'; }
+  finally { cargando.value = false; }
 });
+
+function validar() {
+  const f = formulario.value;
+  const e = {};
+  if (f.nombre.trim().length < 3) e.nombre = 'Ingrese al menos 3 caracteres.';
+  if (!CATEGORIAS.includes(f.categoria)) e.categoria = 'Seleccione una categoría.';
+  if (f.precio === '' || !Number.isFinite(Number(f.precio)) || Number(f.precio) <= 0)
+    e.precio = 'Ingrese un precio mayor que cero.';
+  if (f.descripcion.trim().length < 10) e.descripcion = 'Ingrese al menos 10 caracteres.';
+  errores.value = e;
+  return Object.keys(e).length === 0;
+}
 
 async function guardar() {
   // Evita un segundo envío mientras la solicitud anterior sigue en curso
   if (guardando.value) return;
-  error.value = '';
-  if (!formulario.nombre.trim() || !formulario.categoria.trim() ||
-      !formulario.descripcion.trim() || Number(formulario.precio) <= 0) {
-    error.value = 'Complete todos los campos y escriba un precio mayor que cero.';
-    return;
-  }
+  mensajeError.value = '';
+  if (!validar()) return;
   guardando.value = true;
   const datos = {
-    nombre: formulario.nombre.trim(),
-    categoria: formulario.categoria.trim(),
-    precio: Number(formulario.precio),
-    descripcion: formulario.descripcion.trim()
+    nombre: formulario.value.nombre.trim(),
+    categoria: formulario.value.categoria,
+    precio: Number(formulario.value.precio),
+    descripcion: formulario.value.descripcion.trim()
   };
   try {
-    if (editando) await actualizarServicio(route.params.id, datos);
+    if (editando.value) await actualizarServicio(id, { id, ...datos });
     else await crearServicio(datos);
     router.push('/servicios');
-  } catch (e) { error.value = `No fue posible guardar: ${e.message}`; }
+  } catch { mensajeError.value = 'No fue posible guardar. Verifique la API.'; }
   finally { guardando.value = false; }
 }
 </script>
 
 <template>
-  <section>
+  <section class="contenedor">
     <h2>{{ editando ? 'Editar servicio' : 'Nuevo servicio' }}</h2>
-    <form @submit.prevent="guardar">
-      <label>Nombre <input v-model="formulario.nombre" required /></label>
+    <p v-if="cargando">Cargando servicio...</p>
+    <form @submit.prevent="guardar" novalidate>
+      <label>Nombre <input v-model="formulario.nombre" maxlength="80" /></label>
+      <small v-if="errores.nombre" class="error">{{ errores.nombre }}</small>
       <label>Categoría
-        <select v-model="formulario.categoria" required>
+        <select v-model="formulario.categoria">
           <option value="">Seleccione</option>
-          <option>Soporte</option>
-          <option>Desarrollo</option>
-          <option>Redes</option>
-          <option>Seguridad</option>
+          <option v-for="c in CATEGORIAS" :key="c">{{ c }}</option>
         </select>
       </label>
-      <label>Precio (CLP) <input v-model.number="formulario.precio" type="number" min="1" required /></label>
-      <label>Descripción <textarea v-model="formulario.descripcion" required /></label>
-      <p v-if="error" role="alert" class="error">{{ error }}</p>
-      <button type="submit" :disabled="guardando">{{ guardando ? 'Guardando...' : 'Guardar' }}</button>
-      <RouterLink to="/servicios">Cancelar</RouterLink>
+      <small v-if="errores.categoria" class="error">{{ errores.categoria }}</small>
+      <label>Precio (CLP) <input v-model="formulario.precio" type="number" min="1" step="1" /></label>
+      <small v-if="errores.precio" class="error">{{ errores.precio }}</small>
+      <label>Descripción <textarea v-model="formulario.descripcion" rows="4" /></label>
+      <small v-if="errores.descripcion" class="error">{{ errores.descripcion }}</small>
+      <p v-if="mensajeError" class="error" role="alert">{{ mensajeError }}</p>
+      <div class="acciones">
+        <button type="submit" :disabled="guardando || cargando">{{ guardando ? 'Guardando...' : 'Guardar' }}</button>
+        <RouterLink to="/servicios" class="boton secundario">Cancelar</RouterLink>
+      </div>
     </form>
   </section>
 </template>
