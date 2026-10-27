@@ -1,0 +1,9 @@
+{
+  "servicios": [
+    { "id": "1", "nombre": "Mantención de computadores", "categoria": "Soporte", "precio": 25000, "descripcion": "Diagnóstico y limpieza preventiva" },
+    { "id": "2", "nombre": "Diseño de sitio web", "categoria": "Desarrollo", "precio": 180000, "descripcion": "Sitio institucional adaptable" },
+    { "id": "3", "nombre": "Instalación de red", "categoria": "Redes", "precio": 75000, "descripcion": "Configuración de red local" },
+    { "id": "4", "nombre": "Respaldo de datos en la nube", "categoria": "Soporte", "precio": 45000, "descripcion": "Copia de seguridad automática y restauración" },
+    { "id": "5", "nombre": "Desarrollo de API REST", "categoria": "Desarrollo", "precio": 230000, "descripcion": "Construcción de API para sistemas empresariales" }
+  ]
+}
