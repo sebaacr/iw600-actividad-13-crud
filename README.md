@@ -148,18 +148,32 @@ Abrir la URL que indica Vite (por defecto http://localhost:5173).
 
 ## Error encontrado y solución
 
-> Completar con el error que encontraste al desarrollar. Ejemplo:
+**Error:** al comenzar la Actividad 14 se agregaron registros nuevos a `db.json` (6, 7 y 8, con la
+categoría *Seguridad*) mientras JSON Server estaba en ejecución. La aplicación seguía mostrando solo los
+registros anteriores y la paginación no aparecía, aunque el archivo ya tenía los datos nuevos.
 
-Si JSON Server está detenido, `fetch` lanza una excepción y la vista quedaba sin información útil.
-Se resolvió centralizando las llamadas en `serviciosApi.js`, lanzando un `Error` cuando la respuesta
-no es correcta (`!respuesta.ok`) y capturándolo con `try/catch` en cada vista para mostrar un mensaje.
+**Causa:** JSON Server carga `db.json` en memoria al iniciar y no vuelve a leer los cambios hechos a mano
+en el archivo. Además, cuando la aplicación crea, edita o elimina, JSON Server reescribe `db.json` con el
+contenido que tiene en memoria, por lo que los cambios manuales podían perderse.
+
+**Solución:** detener JSON Server (`Ctrl + C`), editar `db.json` y volver a iniciarlo con `npm run api`.
+Después de reiniciarlo se mostraron los 8 registros y la paginación en dos páginas.
 
 ## Capturas
 
-Agregar las imágenes en la carpeta `capturas/`:
-
-- Actividad 13: listado, creación, edición y eliminación.
-- Actividad 14: listado, filtros, segunda página, validación y formulario editado.
+| Pantalla | Captura |
+|----------|---------|
+| Listado (tabla, página 1 de 2) | ![Listado](capturas/01-listado.png) |
+| Búsqueda "red" y orden por precio descendente | ![Búsqueda y orden](capturas/02-busqueda-orden.png) |
+| Filtro por categoría Soporte | ![Filtro por categoría](capturas/03-filtro-categoria.png) |
+| Segunda página | ![Segunda página](capturas/04-segunda-pagina.png) |
+| Validación del formulario | ![Validación](capturas/05-validacion.png) |
+| Creación de un servicio | ![Creación](capturas/06-creacion.png) |
+| Servicio creado en el listado | ![Servicio creado](capturas/07-servicio-creado.png) |
+| Edición del precio | ![Edición](capturas/08-edicion.png) |
+| Eliminación confirmada | ![Eliminación](capturas/09-eliminacion.png) |
+| JSON Server detenido | ![Error de API](capturas/10-error-api.png) |
+| Vista en teléfono | ![Vista móvil](capturas/11-movil.png) |
 
 ## Preguntas de cierre
 
