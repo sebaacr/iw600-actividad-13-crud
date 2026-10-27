@@ -1,7 +1,10 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <HelloWorld />
+  <header>
+    <h1>Gestión de Servicios Tecnológicos</h1>
+    <nav>
+      <RouterLink to="/">Servicios</RouterLink> |
+      <RouterLink to="/nuevo">Nuevo servicio</RouterLink>
+    </nav>
+  </header>
+  <main><RouterView /></main>
 </template>
