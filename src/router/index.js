@@ -2,10 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 import ListaServicios from '../views/ListaServicios.vue';
 import FormularioServicio from '../views/FormularioServicio.vue';
 
-const rutas = [
-  { path: '/', component: ListaServicios },
-  { path: '/nuevo', component: FormularioServicio },
-  { path: '/editar/:id', component: FormularioServicio }
-];
-
-export default createRouter({ history: createWebHistory(), routes: rutas });
+export default createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', redirect: '/servicios' },
+    { path: '/servicios', component: ListaServicios },
+    { path: '/servicios/nuevo', component: FormularioServicio },
+    { path: '/servicios/:id/editar', component: FormularioServicio }
+  ]
+});

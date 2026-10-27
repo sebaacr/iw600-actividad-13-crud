@@ -35,7 +35,7 @@ async function guardar() {
   try {
     if (editando) await actualizarServicio(route.params.id, datos);
     else await crearServicio(datos);
-    router.push('/');
+    router.push('/servicios');
   } catch (e) { error.value = `No fue posible guardar: ${e.message}`; }
   finally { guardando.value = false; }
 }
@@ -52,13 +52,14 @@ async function guardar() {
           <option>Soporte</option>
           <option>Desarrollo</option>
           <option>Redes</option>
+          <option>Seguridad</option>
         </select>
       </label>
       <label>Precio (CLP) <input v-model.number="formulario.precio" type="number" min="1" required /></label>
       <label>Descripción <textarea v-model="formulario.descripcion" required /></label>
       <p v-if="error" role="alert" class="error">{{ error }}</p>
       <button type="submit" :disabled="guardando">{{ guardando ? 'Guardando...' : 'Guardar' }}</button>
-      <RouterLink to="/">Cancelar</RouterLink>
+      <RouterLink to="/servicios">Cancelar</RouterLink>
     </form>
   </section>
 </template>

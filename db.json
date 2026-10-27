@@ -4,6 +4,9 @@
     { "id": "2", "nombre": "Diseño de sitio web", "categoria": "Desarrollo", "precio": 180000, "descripcion": "Sitio institucional adaptable" },
     { "id": "3", "nombre": "Instalación de red", "categoria": "Redes", "precio": 75000, "descripcion": "Configuración de red local" },
     { "id": "4", "nombre": "Respaldo de datos en la nube", "categoria": "Soporte", "precio": 45000, "descripcion": "Copia de seguridad automática y restauración" },
-    { "id": "5", "nombre": "Desarrollo de API REST", "categoria": "Desarrollo", "precio": 230000, "descripcion": "Construcción de API para sistemas empresariales" }
+    { "id": "5", "nombre": "Desarrollo de API REST", "categoria": "Desarrollo", "precio": 230000, "descripcion": "Construcción de API para sistemas empresariales" },
+    { "id": "6", "nombre": "Auditoría de red", "categoria": "Redes", "precio": 120000, "descripcion": "Revisión de conectividad y seguridad" },
+    { "id": "7", "nombre": "Análisis de vulnerabilidades", "categoria": "Seguridad", "precio": 150000, "descripcion": "Escaneo y reporte de riesgos en servidores" },
+    { "id": "8", "nombre": "Configuración de firewall", "categoria": "Seguridad", "precio": 95000, "descripcion": "Reglas de acceso y protección perimetral" }
   ]
 }

@@ -34,3 +34,25 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   .filtros { flex-direction: column; }
   .grilla { grid-template-columns: 1fr; }
 }
+
+/* Actividad 14 – tabla, filtros y paginación */
+.contenedor { max-width: 1100px; margin: 0 auto; }
+.encabezado-lista { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.filtros { flex-wrap: wrap; margin: 18px 0; }
+.filtros button { margin: 0; }
+.secundario { background: white; color: #153e5c; }
+table { width: 100%; border-collapse: collapse; margin-top: 12px; background: white; }
+th, td { padding: 12px; border: 1px solid #d8e0e8; text-align: left; }
+th { background: #153e69; color: white; }
+tbody tr:nth-child(even) { background: #f7fafc; }
+td .boton, td button { margin: 3px; }
+.paginacion { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+
+@media (max-width: 650px) {
+  table { font-size: .85rem; }
+  thead { display: none; }
+  table, tbody, tr, td { display: block; width: 100%; box-sizing: border-box; }
+  tr { margin-bottom: 12px; border: 1px solid #d8e0e8; border-radius: 8px; overflow: hidden; }
+  td { border: none; border-bottom: 1px solid #edf1f5; }
+  td::before { content: attr(data-label); display: block; font-weight: bold; color: #4b6478; font-size: .75rem; }
+}
